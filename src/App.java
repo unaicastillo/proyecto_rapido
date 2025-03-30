@@ -1,10 +1,8 @@
-import java.io.File;
 import java.util.Scanner;
 
 public class App {
     
     public static Scanner sc = new Scanner(System.in);
-    public static boolean continuar=true;   //Usado para controlar el bucle de los menús
     public static void main(String[] args) throws Exception {
         Scanner sc = new Scanner(System.in);
         int opcion = 0;
@@ -17,9 +15,9 @@ public class App {
                 case 1:
                     System.out.println("opcion 1");
                 case 2:
-                    System.out.println("opcion 1");
+                    System.out.println("opcion 2");
                 case 3:
-                    System.out.println("opcion 1");
+                    menuConverion();
                 case 0:
                     System.out.println("Saliendo...");
                 default:
@@ -46,9 +44,8 @@ public class App {
 
     //Menú para elegir el tipo de archivo al que se quiere convertir
     public static void menuConverion(){
-
-        continuar=true;
-        while(continuar){
+        boolean continuar = true;
+        do {
             System.out.println("   ________________________");
             System.out.println("  |     MENÚ CONVERSIÓN    |");
             System.out.println("  |________________________|");
@@ -57,30 +54,27 @@ public class App {
             System.out.println("   |  3. XML              |");
             System.out.println("   |  0. Salir.           |");
             System.out.println("   \\______________________/");
+            System.out.println("Introduce la opción que quieras realizar: ");
+            
 
             switch (sc.nextInt()) {
                 case 1: 
-                    System.out.println("opcion 1");
-                    continuar=false;
-                    break;
+                    System.out.println("Convirtiendo a CSV...");
+                    continuar = false;
                 case 2: 
-                    System.out.println("opcion 2");
-                    continuar=false;
-                    break;
+                    System.out.println("Convirtiendo a JSON...");
+                    continuar = false;
                 case 3:
-                    System.out.println("opcion 3");
-                    continuar=false;
-                    break;
+                    System.out.println("Convirtiendo a XML...");
+                    continuar = false;
                 case 0:
-                    continuar=false;
-                    break;
+                    System.out.println("Saliendo...");
+                    continuar = false;
                 default:
                     System.out.println("opcion incorrecta, vuelve a intentarlo.");
-                    break;  
-            }
 
-        }
-        continuar=true;
+            }
+        } while (continuar);
 
     }
 }
