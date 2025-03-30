@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -20,6 +21,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -29,11 +31,16 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.databind.annotation.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class GestionFicheros {
-    static String  pathInput = "input/";
+    //static String  pathInput = "input/";
     static String pathOutput = "output/";
-    public static ArrayList leerXml() throws ParserConfigurationException, SAXException, IOException{
+
+    public static ArrayList leerXml(String pathInput) throws ParserConfigurationException, SAXException, IOException{
         File fXml = new File(pathInput+"coches.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         dbFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
@@ -78,7 +85,7 @@ public class GestionFicheros {
     } 
 
 
-    public static ArrayList leerCsv(){
+    public static ArrayList leerCsv(String pathInput){
         ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
         String archivoCsv = pathInput+"coches.csv"; 
         HashMap<String, String> mapaCoches ;
@@ -114,12 +121,12 @@ public class GestionFicheros {
 
 
 
-    public static ArrayList leerJson(){
+    public static ArrayList leerJson(String pathInput){
         JSONParser parser = new JSONParser();
         ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
         HashMap<String, String> mapaCoches;
         try {
-            JSONArray arrayJson = (JSONArray) parser.parse(new FileReader("input/coches.json"));
+            JSONArray arrayJson = (JSONArray) parser.parse(new FileReader(pathInput + "coches.json"));
 
             for (int i = 0; i < arrayJson.size(); i++) {
                 mapaCoches = new HashMap<>();
@@ -186,7 +193,7 @@ public class GestionFicheros {
         }   
     }
     public static void escribirXml(ArrayList<HashMap<String, String>> lista) {
-        String archivoXml = pathOutput+"coches.Xml";
+        String archivoXml = pathOutput+"coches.xml";
 
 
        
@@ -237,7 +244,7 @@ public class GestionFicheros {
 
 
 
-            saveXml(doc, output);
+            saveFile(doc, output);
         } catch (ParserConfigurationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -248,7 +255,7 @@ public class GestionFicheros {
     }
 
 
-    private static void saveXml(Document doc, OutputStream filePath) {
+    private static void saveFile(Document doc, OutputStream filePath) {
         try {
             
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -260,5 +267,34 @@ public class GestionFicheros {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public static void escribirJson(ArrayList lista) {
+        String archivoJson = pathOutput+"coches.json";
+        List<JSONObject> jsonObj = new ArrayList<JSONObject>();
+        HashMap<String, String> mapaCoches; 
+        JSONObject obj;
+
+        
+        try {
+            FileWriter file = new FileWriter(archivoJson);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json;
+            json = objectMapper.writeValueAsString(lista);
+                        
+            file.write(json);
+            file.close();
+
+
+        } catch (JsonProcessingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        
+        
+    
     }
 }
